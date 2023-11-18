@@ -3,6 +3,7 @@ package ptr_test
 import (
 	"strconv"
 	"testing"
+	"time"
 	"unsafe"
 
 	"github.com/hightech-ninja/ptr"
@@ -30,6 +31,29 @@ func TestTo(t *testing.T) {
 	})
 }
 
+func TestToEmptyble(t *testing.T) {
+	t.Run("It should return nil for zero values", func(t *testing.T) {
+		var zeroTime time.Time
+		require.Nil(t, ptr.ToEmptyble(zeroTime))
+
+		var zeroStr string
+		require.Nil(t, ptr.ToEmptyble(zeroStr))
+
+		var zeroInt int
+		require.Nil(t, ptr.ToEmptyble(zeroInt))
+	})
+	t.Run("It should return pointer for non-zero values", func(t *testing.T) {
+		got1 := ptr.ToEmptyble(time.Now())
+		require.NotNil(t, got1)
+
+		got2 := ptr.ToEmptyble("str")
+		require.Equal(t, "str", *got2)
+
+		got3 := ptr.ToEmptyble(42)
+		require.Equal(t, 42, *got3)
+	})
+}
+
 func TestDeref(t *testing.T) {
 	t.Run("It should dereference non-nil pointer", func(t *testing.T) {
 		ptr1 := ptr.To(123)
@@ -48,10 +72,10 @@ func TestDeref(t *testing.T) {
 	})
 }
 
-func TestDerefToDefault(t *testing.T) {
+func TestDerefOr(t *testing.T) {
 	t.Run("It should dereference non-nil pointer", func(t *testing.T) {
 		ptr1 := ptr.To(123)
-		got1 := ptr.DerefToDefault(ptr1, 1)
+		got1 := ptr.DerefOr(ptr1, 1)
 		require.Equal(t, *ptr1, got1)
 	})
 
@@ -65,7 +89,7 @@ func TestDerefToDefault(t *testing.T) {
 			Email: "unknown",
 		}
 
-		got := ptr.DerefToDefault(nil, defaultUser)
+		got := ptr.DerefOr(nil, defaultUser)
 		require.Equal(t, defaultUser, got)
 	})
 }

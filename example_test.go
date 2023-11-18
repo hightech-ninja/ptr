@@ -67,14 +67,14 @@ func ExampleDeref() {
 	// User: John  Doe
 }
 
-func ExampleDerefToDefault() {
+func ExampleDerefOr() {
 	// get optional fields, but when zero value for nil is not suitable
 	var clientID1 *string
-	value1 := ptr.DerefToDefault(clientID1, "unknown")
+	value1 := ptr.DerefOr(clientID1, "unknown")
 	fmt.Println(value1)
 
 	clientID2 := ptr.To("your-best-client@gmail.com")
-	value2 := ptr.DerefToDefault(clientID2, "unknown")
+	value2 := ptr.DerefOr(clientID2, "unknown")
 	fmt.Println(value2)
 
 	// Output:
@@ -82,34 +82,7 @@ func ExampleDerefToDefault() {
 	// your-best-client@gmail.com
 }
 
-func ExampleReset() {
-	// Reusing Memory in Loops
-	number := ptr.To(5)
-	for i := 0; i < 3; i++ {
-		fmt.Println(*number)
-		ptr.Reset(number)
-	}
-
-	// Clearing User Input in GUI Applications
-	userInput := ptr.To("User input data")
-	// Assume user triggers a reset action
-	ptr.Reset(userInput)
-	fmt.Println("User input after reset:", *userInput)
-
-	// Output:
-	// 5
-	// 0
-	// 0
-	// User input after reset:
-}
-
 func ExampleResetTo() {
-	// Updating Configurations Dynamically
-	maxUsers := ptr.To(100)
-	fmt.Println("Max Users:", *maxUsers)
-	ptr.ResetTo(maxUsers, 150)
-	fmt.Println("Updated Max Users:", *maxUsers)
-
 	// Modifying State in Stateful Applications
 	gameState := ptr.To("paused")
 	fmt.Println("Game State:", *gameState)
@@ -117,8 +90,6 @@ func ExampleResetTo() {
 	fmt.Println("Game State after update:", *gameState)
 
 	// Output:
-	// Max Users: 100
-	// Updated Max Users: 150
 	// Game State: paused
 	// Game State after update: running
 }
@@ -152,9 +123,9 @@ func ExampleCompare() {
 
 func ExampleMap() {
 	age := ptr.To(33)
-	str  := ptr.Map(age, strconv.Itoa)
-	fmt.Printf("%q",*str)
-	
+	str := ptr.Map(age, strconv.Itoa)
+	fmt.Printf("%q", *str)
+
 	// Output:
 	// "33"
 }

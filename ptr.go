@@ -6,6 +6,14 @@ func To[T any](value T) *T {
 	return &value
 }
 
+func ToEmptyble[T comparable](value T) *T {
+	var zero T
+	if value == zero {
+		return nil
+	}
+	return &value
+}
+
 // Deref safely dereference pointer. If ptr is nil, it returns zero value of type T.
 func Deref[T any](ptr *T) T {
 	if ptr == nil {
@@ -15,8 +23,8 @@ func Deref[T any](ptr *T) T {
 	return *ptr
 }
 
-// DerefToDefault safely dereference pointer. If ptr is nil, it returns provided default value of tpye T.
-func DerefToDefault[T any](ptr *T, def T) T {
+// DerefOr safely dereference pointer. If ptr is nil, it returns provided default value of tpye T.
+func DerefOr[T any](ptr *T, def T) T {
 	if ptr == nil {
 		return def
 	}
